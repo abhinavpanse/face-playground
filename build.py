@@ -15,6 +15,6 @@ variants.mkdir(exist_ok=True)
 for expression in ('happy', 'relaxed', 'slapped', 'sad'):
     variant = svg.replace('data-expression="happy"', f'data-expression="{expression}"', 1)
     variant = re.sub(r'<title id="portrait-title">.*?</title>',
-                     f'<title id="portrait-title">A {expression} caricature portrait</title>', variant)
+                     f'<title id="portrait-title">A {expression} detailed vector portrait</title>', variant)
     (variants / f'{expression}.svg').write_text(variant)
 print('Built index.html, head-only.svg, and four vector expression files.')

@@ -3,8 +3,8 @@
 
   const expressions = new Set(['happy', 'relaxed', 'slapped', 'sad']);
   const defaultPalette = Object.freeze({
-    skin: '#b88762', hair: '#211f20', lips: '#a75f59',
-    shirt: '#242d32', blush: '#d66a64',
+    skin: '#bd896b', hair: '#211c1a', lips: '#99555a',
+    shirt: '#25443c', blush: '#d16d6b',
   });
 
   function FaceRig(svg) {
@@ -24,7 +24,7 @@
 
     function render(expression) {
       svg.dataset.expression = expression;
-      svg.querySelector('#portrait-title').textContent = `A ${expression} caricature portrait`;
+      svg.querySelector('#portrait-title').textContent = `A ${expression} detailed vector portrait`;
       svg.dispatchEvent(new CustomEvent('faceexpression', {detail: {expression}}));
     }
 
@@ -41,7 +41,20 @@
           throw new TypeError('Use skin, hair, lips, shirt, or blush with a six-digit hex colour.');
         }
       }
-      for (const [key, value] of Object.entries(palette)) svg.style.setProperty(`--${key}`, value);
+      for (const [key, value] of Object.entries(palette)) {
+        svg.style.setProperty(`--${key}`, value);
+        const filter = svg.querySelector(`filter[data-tint="${key}"]`);
+        if (!filter) continue;
+        const source = filter.dataset.source;
+        if (!/^#[0-9a-f]{6}$/i.test(source)) continue;
+        ['R', 'G', 'B'].forEach((channel, index) => {
+          const start = 1 + index * 2;
+          const from = Math.max(1, Math.min(254, parseInt(source.slice(start, start + 2), 16)));
+          const to = Math.max(1, Math.min(254, parseInt(value.slice(start, start + 2), 16)));
+          const exponent = Math.log(to / 255) / Math.log(from / 255);
+          filter.querySelector(`feFunc${channel}`).setAttribute('exponent', String(exponent));
+        });
+      }
     }
 
     function slap({side = 'left', intensity = 1} = {}) {

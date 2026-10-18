@@ -9,7 +9,7 @@
   }
 
   const rig = window.FaceRig(svg);
-  const defaults = { skin: '#b88762', hair: '#211f20', lips: '#a75f59', shirt: '#242d32', blush: '#d66a64' };
+  const defaults = { skin: '#bd896b', hair: '#211c1a', lips: '#99555a', shirt: '#25443c', blush: '#d16d6b' };
   const emotionNames = { happy: 'Feeling happy', relaxed: 'Nice and relaxed', slapped: 'Ouch!', sad: 'A little sad' };
   const expressionButtons = [...document.querySelectorAll('.expression-button[data-expression]')];
   const colourInputs = [...document.querySelectorAll('input[type="color"]')];

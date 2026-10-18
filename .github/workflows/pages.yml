@@ -1,4 +1,4 @@
-name: Deploy phone demo
+name: Deploy Slap Your Ex
 
 on:
   push:
@@ -28,11 +28,13 @@ jobs:
           node --check face-rig.js
           node --check preview.js
           node --check motion-input.js
+          node --check game-state.js
           node --test tests/*.test.cjs
+          python3 -m json.tool manifest.webmanifest > /dev/null
           python3 build.py
           mkdir _site
-          cp index.html portrait.svg head-only.svg face-rig.js motion-input.js preview.css preview.js expressions.html .nojekyll _site/
-          cp -R expressions _site/
+          cp index.html portrait.svg head-only.svg face-rig.js motion-input.js game-state.js preview.css preview.js expressions.html manifest.webmanifest app-icon.svg .nojekyll _site/
+          cp -R expressions icons fonts _site/
       - uses: actions/configure-pages@v5
       - uses: actions/upload-pages-artifact@v3
         with:

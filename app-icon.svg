@@ -1,0 +1,12 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="512" height="512" viewBox="0 0 512 512" role="img" aria-labelledby="icon-title">
+  <title id="icon-title">Slap Your Ex</title>
+  <rect width="512" height="512" rx="108" fill="#e8fc74"/>
+  <g fill="#181b18">
+    <path d="M209 435l-5-43c-30-22-52-48-72-81l-39-65c-9-15-6-32 8-41 13-8 29-5 39 8l38 47-17-136c-3-19 7-34 24-36 17-3 31 8 34 27l14 90-4-119c-1-19 11-32 28-32s29 13 29 32l1 118 22-99c4-18 18-29 35-25 17 4 26 20 22 38l-21 97 27-63c7-16 23-23 38-16 16 7 20 23 13 40l-52 139c-15 40-39 69-71 85l-4 35z"/>
+    <path d="M429 56l7 21 21 7-21 7-7 21-7-21-21-7 21-7z"/>
+  </g>
+  <g fill="none" stroke="#181b18" stroke-width="14" stroke-linecap="round">
+    <path d="M79 100l25 24M57 155l35 7"/>
+  </g>
+  <path d="M230 300c17-21 39-31 65-30" fill="none" stroke="#e8fc74" stroke-width="13" stroke-linecap="round"/>
+</svg>

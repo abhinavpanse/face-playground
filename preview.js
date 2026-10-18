@@ -3,8 +3,8 @@
   const svg = document.getElementById('portrait');
   const stage = document.getElementById('portrait-stage');
   const announcer = document.getElementById('announcer');
-  if (!svg || typeof window.FaceRig !== 'function') {
-    announcer.textContent = 'The portrait could not be loaded. Please open the complete preview folder.';
+  if (!svg || typeof window.FaceRig !== 'function' || typeof window.SlapGameState !== 'function') {
+    announcer.textContent = 'The game could not be loaded. Refresh the page and try again.';
     return;
   }
 
@@ -13,11 +13,26 @@
   const emotionNames = { happy: 'Feeling happy', relaxed: 'Nice and relaxed', slapped: 'Ouch!', sad: 'A little sad' };
   const expressionButtons = [...document.querySelectorAll('.expression-button[data-expression]')];
   const colourInputs = [...document.querySelectorAll('input[type="color"]')];
+  const portraitPanel = document.querySelector('.portrait-panel');
+  const settingsDialog = document.getElementById('settings-dialog');
+  const slapCount = document.getElementById('slap-count');
+  const comboCount = document.getElementById('combo-count');
+  const comboFill = document.getElementById('combo-fill');
+  const impactWord = document.getElementById('impact-word');
+  const gameStatus = document.getElementById('game-status');
+  const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)');
+  let storage;
+  try { storage = window.localStorage; } catch { /* Local scores are optional. */ }
+  const game = window.SlapGameState({storage});
   let currentExpression = 'happy';
-  let reactionCount = 0;
-  let lastReactionAt = -Infinity;
-  let lastReactionSource = null;
   let motionEnabled = false;
+  let comboTimer = null;
+  let comboAnimation = null;
+  let impactTimer = null;
+  let countAnimation = null;
+  let impactAnimation = null;
+  let settingsTrigger = null;
+  let backdropPointerDown = false;
   const feedback = createImpactFeedback();
   const motionToggle = document.getElementById('motion-toggle');
   const motionPanel = document.getElementById('motion-panel');
@@ -36,7 +51,7 @@
     motionToggle.disabled = status === 'unsupported';
     motionToggle.textContent = status === 'requesting' ? 'Cancel' : motionEnabled ? 'Stop motion' : 'Enable motion';
     document.getElementById('motion-status').textContent = message;
-    document.querySelector('.portrait-panel').classList.toggle('motion-playing', status === 'active');
+    portraitPanel.classList.toggle('motion-playing', status === 'active');
   }
 
   motionToggle.addEventListener('click', () => {
@@ -73,9 +88,8 @@
       button.classList.toggle('is-active', active);
       button.setAttribute('aria-pressed', String(active));
     });
-    document.querySelector('.portrait-panel').dataset.expression = expression;
+    portraitPanel.dataset.expression = expression;
     document.getElementById('mood-label').textContent = emotionNames[expression] || expression;
-    document.querySelectorAll('[data-step]').forEach((step) => step.classList.toggle('is-current', step.dataset.step === expression));
     announcer.textContent = emotionNames[expression] || expression;
   }
 
@@ -92,24 +106,143 @@
   });
 
   function react(event) {
+    if (settingsDialog.open || document.hidden) return;
     feedback.unlock();
     const bounds = stage.getBoundingClientRect();
     const hasPoint = event && typeof event.clientX === 'number' && event.detail !== 0;
-    const side = hasPoint ? (event.clientX < bounds.left + bounds.width / 2 ? 'left' : 'right') : (reactionCount % 2 ? 'right' : 'left');
+    const side = hasPoint ? (event.clientX < bounds.left + bounds.width / 2 ? 'left' : 'right') : (game.snapshot().slaps % 2 ? 'right' : 'left');
     performReaction(side, 1);
   }
 
   function performReaction(side, intensity, source = 'tap') {
     const now = performance.now();
-    if (now - lastReactionAt < 180) return;
-    if (source === 'tap' && lastReactionSource === 'motion' && now - lastReactionAt < 600) return;
-    lastReactionAt = now;
-    lastReactionSource = source;
-    reactionCount += 1;
+    if (settingsDialog.open || document.hidden) return;
+    const state = game.hit(now, source);
+    if (!state) return;
     if (motion) motion.suppress(600);
     rig.slap({side, intensity});
     feedback.play(intensity);
+    renderScore(state);
+    showImpact(state, side, source);
+    startComboClock(state);
   }
+
+  function renderScore(state) {
+    slapCount.textContent = String(state.slaps);
+    document.getElementById('best-combo').textContent = String(state.best);
+    comboCount.textContent = String(state.combo);
+    comboCount.dataset.active = String(state.combo > 1);
+    portraitPanel.dataset.combo = state.combo > 1 ? 'active' : 'idle';
+  }
+
+  function stopComboClock() {
+    window.clearTimeout(comboTimer);
+    comboTimer = null;
+    if (comboAnimation) comboAnimation.cancel();
+    comboAnimation = null;
+    comboFill.style.transform = 'scaleX(0)';
+  }
+
+  function startComboClock(state) {
+    stopComboClock();
+    const remaining = Math.max(0, state.comboExpiresAt - performance.now());
+    comboFill.style.transform = 'scaleX(1)';
+    if (!reduceMotion.matches && comboFill.animate) {
+      comboAnimation = comboFill.animate([{transform: 'scaleX(1)'}, {transform: 'scaleX(0)'}], {
+        duration: remaining, easing: 'linear', fill: 'forwards',
+      });
+    }
+    comboTimer = window.setTimeout(() => {
+      stopComboClock();
+      const next = game.expireCombo(performance.now());
+      renderScore(next);
+      if (next.combo) startComboClock(next);
+      else gameStatus.textContent = 'Streak finished. Go again!';
+    }, remaining + 1);
+  }
+
+  function clearImpact() {
+    window.clearTimeout(impactTimer);
+    impactTimer = null;
+    impactWord.classList.remove('is-active');
+    slapCount.classList.remove('is-popping');
+    if (impactAnimation) impactAnimation.cancel();
+    if (countAnimation) countAnimation.cancel();
+    impactAnimation = null;
+    countAnimation = null;
+  }
+
+  function showImpact(state, side, source) {
+    clearImpact();
+    const word = ['WHAP!', 'SMACK!', 'OOF!'][(state.slaps - 1) % 3];
+    impactWord.textContent = word;
+    impactWord.dataset.side = side;
+    impactWord.dataset.source = source;
+    impactWord.classList.add('is-active');
+    slapCount.classList.add('is-popping');
+    portraitPanel.dataset.side = side;
+    portraitPanel.dataset.source = source;
+    gameStatus.textContent = state.combo > 1 ? `${state.combo} in a row. Keep it going!` : 'Nice hit. Tap or shake again!';
+    announcer.textContent = `${word} ${state.slaps} ${state.slaps === 1 ? 'slap' : 'slaps'}.${state.combo > 1 ? ` Streak: ${state.combo}.` : ''}`;
+    if (!reduceMotion.matches) {
+      if (impactWord.animate) impactAnimation = impactWord.animate([
+        {transform: 'scale(.65) rotate(-8deg)', opacity: 0},
+        {transform: 'scale(1.12) rotate(-5deg)', opacity: 1, offset: .3},
+        {transform: 'scale(1) rotate(-5deg)', opacity: 1, offset: .7},
+        {transform: 'scale(1.05) rotate(-5deg)', opacity: 0},
+      ], {duration: 600, easing: 'ease-out'});
+      if (slapCount.animate) countAnimation = slapCount.animate([
+        {transform: 'scale(1)'}, {transform: 'scale(1.22)'}, {transform: 'scale(1)'},
+      ], {duration: 240, easing: 'ease-out'});
+    }
+    impactTimer = window.setTimeout(clearImpact, 600);
+  }
+
+  function pauseRound() {
+    renderScore(game.setPaused(true));
+    stopComboClock();
+    clearImpact();
+    rig.setExpression('happy');
+    if (motion) motion.suppress(600);
+  }
+
+  document.getElementById('reset-round').addEventListener('click', () => {
+    renderScore(game.resetRound());
+    stopComboClock();
+    clearImpact();
+    rig.setExpression('happy');
+    if (motion) motion.suppress(600);
+    gameStatus.textContent = 'Fresh round. Your best streak is saved.';
+    announcer.textContent = 'Round reset. Your best streak is saved.';
+  });
+
+  document.getElementById('settings-open').addEventListener('click', (event) => {
+    if (settingsDialog.open) return;
+    settingsTrigger = event.currentTarget;
+    settingsDialog.showModal();
+    pauseRound();
+    gameStatus.textContent = 'Game paused. Make this character yours.';
+  });
+  document.getElementById('settings-close').addEventListener('click', () => settingsDialog.close());
+  function isOutsideDialog(event) {
+    const bounds = settingsDialog.getBoundingClientRect();
+    return event.clientX < bounds.left || event.clientX > bounds.right || event.clientY < bounds.top || event.clientY > bounds.bottom;
+  }
+  settingsDialog.addEventListener('pointerdown', (event) => {
+    backdropPointerDown = event.target === settingsDialog && isOutsideDialog(event);
+  });
+  settingsDialog.addEventListener('click', (event) => {
+    if (event.target === settingsDialog && backdropPointerDown && isOutsideDialog(event)) settingsDialog.close();
+    backdropPointerDown = false;
+  });
+  settingsDialog.addEventListener('close', () => {
+    backdropPointerDown = false;
+    game.setPaused(document.hidden);
+    rig.setExpression('happy');
+    if (motion) motion.suppress(600);
+    gameStatus.textContent = 'Ready when you are. Tap or shake!';
+    if (settingsTrigger?.isConnected) settingsTrigger.focus({preventScroll: true});
+  });
 
   stage.addEventListener('click', react);
   stage.addEventListener('keydown', (event) => {
@@ -147,12 +280,21 @@
   });
 
   rig.setExpression('happy');
+  renderScore(game.snapshot());
+  comboFill.style.transform = 'scaleX(0)';
 
   document.addEventListener('visibilitychange', () => {
-    if (document.hidden) rig.setExpression('happy');
+    if (document.hidden) pauseRound();
+    else {
+      game.setPaused(settingsDialog.open);
+      if (motion) motion.suppress(600);
+      if (!settingsDialog.open) gameStatus.textContent = 'Welcome back. Start a new streak!';
+    }
   });
   window.addEventListener('pagehide', () => {
     if (motion) motion.disable();
+    stopComboClock();
+    clearImpact();
     rig.destroy();
   });
 

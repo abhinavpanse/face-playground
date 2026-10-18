@@ -2,94 +2,98 @@
 <html lang="en">
 <head>
   <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-  <meta name="theme-color" content="#f7f2e7">
-  <meta name="description" content="A detailed, editable vector portrait. Explore expressions, change the palette, and take your character with you.">
-  <title>Face / Play — A little character study</title>
-  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='9' fill='%23ed633f'/%3E%3Cpath d='M9 11h14M9 16h11M9 10v14' fill='none' stroke='%23fff8e9' stroke-width='3'/%3E%3C/svg%3E">
-  <link rel="stylesheet" href="preview.css?v=portrait-2">
-  <script src="face-rig.js?v=portrait-2" defer></script>
-  <script src="motion-input.js?v=portrait-2" defer></script>
-  <script src="preview.js?v=portrait-2" defer></script>
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <meta name="theme-color" content="#181b18">
+  <meta name="description" content="Slap Your Ex. A little breakup arcade for your phone. Tap the portrait or enable motion, build a streak, and watch the face bounce back.">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  <meta name="apple-mobile-web-app-title" content="Slap Your Ex">
+  <title>Slap Your Ex — A little breakup arcade</title>
+  <link rel="icon" type="image/svg+xml" href="app-icon.svg">
+  <link rel="apple-touch-icon" href="icons/apple-touch-icon.png">
+  <link rel="manifest" href="manifest.webmanifest">
+  <link rel="preload" href="fonts/Anton-Regular.ttf" as="font" type="font/ttf" crossorigin>
+  <link rel="stylesheet" href="preview.css?v=slap-app-1">
+  <script src="face-rig.js?v=slap-app-1" defer></script>
+  <script src="motion-input.js?v=slap-app-1" defer></script>
+  <script src="game-state.js?v=slap-app-1" defer></script>
+  <script src="preview.js?v=slap-app-1" defer></script>
 </head>
 <body>
-  <div class="page-shell">
-    <header class="masthead">
-      <a class="wordmark" href="#main" aria-label="Face Play home">FACE <span>/</span> PLAY<span class="wordmark-dot" aria-hidden="true"></span></a>
-      <span class="edition">CHARACTER STUDY <span>001</span></span>
-      <a class="source-link" href="portrait.svg" download>Original SVG <span aria-hidden="true">↗</span></a>
+  <div class="app-shell">
+    <header class="app-header">
+      <a class="brand" href="#game" aria-label="Slap Your Ex home"><img src="app-icon.svg" width="38" height="38" alt=""><h1>SLAP <span>YOUR EX</span></h1></a>
+      <span class="header-caption">A LITTLE BREAKUP ARCADE</span>
+      <div class="header-actions">
+        <button type="button" id="sound-toggle" class="utility-button sound-toggle" aria-pressed="true">Sound on</button>
+        <button type="button" id="settings-open" class="settings-button" aria-label="Open character and game settings" aria-haspopup="dialog"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 7h16M4 17h16"/><circle cx="9" cy="7" r="3"/><circle cx="15" cy="17" r="3"/></svg></button>
+      </div>
     </header>
 
-    <main id="main">
-      <section class="intro" aria-labelledby="page-title">
-        <div>
-          <p class="eyebrow"><span class="tiny-spark" aria-hidden="true">✳</span> A LITTLE MOTION EXPERIMENT</p>
-          <h1 id="page-title">A face.<br><em>A few feelings.</em></h1>
-        </div>
-        <div class="intro-note">
-          <span class="note-arrow" aria-hidden="true">↙</span>
-          <p>Enable motion. Give your phone a quick shake.<br>A little ouch, a little sad, then all smiles.<br>Or tap the portrait to try it.</p>
-        </div>
+    <main id="game" class="game-layout">
+      <section class="intro" aria-label="About the game">
+        <p class="eyebrow"><span></span> OPEN. TAP. LET IT OUT.</p>
+        <p class="hero-title" aria-hidden="true">SLAP<br>YOUR<br><em>EX.</em><span class="title-star">✳</span></p>
+        <p class="intro-copy">All the drama.<br>None of the texting.</p>
+        <div class="how-to"><span class="how-number">01 /</span><p><strong>Tap the face.</strong> Or hit the big red button.</p><span class="how-number">02 /</span><p><strong>Make a move.</strong> Enable motion and give your phone a quick shake.</p><span class="how-number">03 /</span><p><strong>Keep the streak.</strong> Quick hits build a combo. The face always bounces back.</p></div>
+        <span class="desktop-stamp">STILL SMILING<br>AFTER EVERYTHING.</span>
       </section>
 
-      <div class="studio">
-        <section class="portrait-panel" aria-label="Interactive portrait">
-          <div class="stage-topline"><span><span class="live-dot" aria-hidden="true"></span> LIVE PORTRAIT</span><span class="artwork-label">100% VECTOR</span></div>
-          <div class="motion-panel" id="motion-panel" data-status="off">
-            <div class="motion-main">
-              <div class="motion-copy"><strong>Let your phone play along.</strong><p id="motion-status" role="status" aria-live="polite">Enable motion, then give it a quick shake.</p></div>
-              <button type="button" id="motion-toggle" class="motion-toggle" aria-pressed="false" aria-describedby="motion-status">Enable motion</button>
-            </div>
-            <div class="motion-settings">
-              <label class="sensitivity-label" for="motion-sensitivity">Sensitivity <select id="motion-sensitivity"><option value="gentle">Gentle</option><option value="normal" selected>Normal</option><option value="firm">Firm</option></select></label>
-              <div class="motion-meter" aria-hidden="true"><span id="motion-level"></span></div>
-              <button type="button" id="sound-toggle" class="sound-toggle" aria-pressed="true">Sound on</button>
-            </div>
+      <section class="game-console" aria-label="Slap Your Ex game">
+        <div class="portrait-panel" data-expression="happy">
+          <div class="scoreboard">
+            <div class="score-block"><span class="score-label">SLAPS THIS ROUND</span><strong id="slap-count" class="score-number">0</strong></div>
+            <span class="mood-pill" id="mood-pill"><span class="mood-light" aria-hidden="true"></span><span id="mood-label">Feeling happy</span></span>
+            <div class="best-block"><span class="score-label">BEST STREAK</span><strong><span aria-hidden="true">✦</span> <span id="best-combo">0</span></strong></div>
           </div>
-          <div class="portrait-stage" id="portrait-stage" role="button" tabindex="0" aria-label="Tap the portrait to play a surprised, sad, then happy reaction" aria-describedby="tap-hint">
-            <div class="portrait-halo" aria-hidden="true"></div>
-            <span class="stage-doodle doodle-one" aria-hidden="true">✳</span>
-            <span class="stage-doodle doodle-two" aria-hidden="true">✧</span>
+          <div class="portrait-stage" id="portrait-stage" role="button" tabindex="0" aria-label="Slap the portrait" aria-describedby="game-status">
+            <div class="stage-orbit" aria-hidden="true"></div>
+            <div class="stage-ruler ruler-left" aria-hidden="true"></div><div class="stage-ruler ruler-right" aria-hidden="true"></div>
+            <span class="stage-corner top-left" aria-hidden="true"></span><span class="stage-corner top-right" aria-hidden="true"></span>
+            <span class="stage-label" aria-hidden="true">LET IT OUT.</span>
             <div class="portrait-art"><!-- PORTRAIT_SVG --></div>
-            <span class="tap-sticker" aria-hidden="true">tap<br>me!<svg viewBox="0 0 42 36"><path d="M4 4 Q6 26 32 26 M22 16 L34 27 19 33"/></svg></span>
+            <span class="tap-nudge" aria-hidden="true">tap here <svg viewBox="0 0 48 44"><path d="M42 5Q41 35 8 31m10-12L7 32l17 7"/></svg></span>
+            <span id="impact-word" class="impact-burst" aria-hidden="true">WHAP!</span>
+            <span class="combo-badge" aria-hidden="true"><span class="combo-multiplier">×<span id="combo-count" data-active="false">0</span></span><span>HIT STREAK</span></span>
+            <div class="combo-track" aria-hidden="true"><span id="combo-fill"></span></div>
           </div>
-          <div class="stage-bottomline"><p id="tap-hint"><span aria-hidden="true">↖</span> Tap the face, or enable motion</p><span class="mood-pill" id="mood-pill"><span class="mood-light" aria-hidden="true"></span><span id="mood-label">Feeling happy</span></span></div>
-        </section>
-
-        <aside class="controls" aria-label="Portrait controls">
-          <section class="control-section expressions-section" aria-labelledby="expression-heading">
-            <div class="section-heading"><h2 id="expression-heading"><span class="section-number">01</span> Set the mood</h2><span class="small-caption">GO ON, TRY ONE</span></div>
-            <div class="expression-grid" role="group" aria-label="Expression">
-              <button type="button" class="expression-button is-active" data-expression="happy" aria-pressed="true"><svg viewBox="0 0 48 48" aria-hidden="true"><circle cx="24" cy="24" r="19"/><path d="M14 20q3-5 6 0m8 0q3-5 6 0M15 28q9 12 18 0"/></svg><span>Happy</span><span class="expression-dot" aria-hidden="true"></span></button>
-              <button type="button" class="expression-button" data-expression="relaxed" aria-pressed="false"><svg viewBox="0 0 48 48" aria-hidden="true"><circle cx="24" cy="24" r="19"/><path d="M13 20q4 5 8 0m6 0q4 5 8 0M19 31q5 3 10 0"/></svg><span>Relaxed</span><span class="expression-dot" aria-hidden="true"></span></button>
-              <button type="button" class="expression-button" data-expression="slapped" aria-pressed="false"><svg viewBox="0 0 48 48" aria-hidden="true"><circle cx="24" cy="24" r="19"/><path d="m14 16 6 5-6 4m20-9-6 5 6 4M20 32q4-7 8 0"/></svg><span>Ouch!</span><span class="expression-dot" aria-hidden="true"></span></button>
-              <button type="button" class="expression-button" data-expression="sad" aria-pressed="false"><svg viewBox="0 0 48 48" aria-hidden="true"><circle cx="24" cy="24" r="19"/><path d="m13 18 7-3m8 0 7 3M17 32q7-8 14 0M17 22v2m14-2v2"/></svg><span>Sad</span><span class="expression-dot" aria-hidden="true"></span></button>
-            </div>
-            <button type="button" class="reaction-button" id="play-reaction"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="m9 5 10 7-10 7Z"/></svg><span>Play the reaction</span><span class="reaction-arrow" aria-hidden="true">↗</span></button>
-            <p class="sequence" aria-label="Reaction sequence: Happy, ouch, sad, happy"><span data-step="happy">Happy</span><span aria-hidden="true">→</span><span data-step="slapped">Ouch</span><span aria-hidden="true">→</span><span data-step="sad">Sad</span><span aria-hidden="true">→</span><span data-step="happy">Happy</span></p>
-          </section>
-
-          <section class="control-section palette-section" aria-labelledby="palette-heading">
-            <div class="section-heading"><h2 id="palette-heading"><span class="section-number">02</span> Make it yours</h2><button type="button" class="text-button" id="reset-palette">Reset colours <span aria-hidden="true">↺</span></button></div>
-            <div class="palette-grid">
-              <label class="colour-control"><input type="color" name="skin" value="#bd896b" aria-label="Skin colour"><span>Skin</span></label>
-              <label class="colour-control"><input type="color" name="hair" value="#211c1a" aria-label="Hair colour"><span>Hair</span></label>
-              <label class="colour-control"><input type="color" name="lips" value="#99555a" aria-label="Lip colour"><span>Lips</span></label>
-              <label class="colour-control"><input type="color" name="shirt" value="#25443c" aria-label="Shawl colour"><span>Shawl</span></label>
-              <label class="colour-control"><input type="color" name="blush" value="#d16d6b" aria-label="Blush colour"><span>Blush</span></label>
-            </div>
-          </section>
-
-          <div class="takeaway">
-            <div class="takeaway-copy"><span class="takeaway-icon" aria-hidden="true">↗</span><p><strong>A character you can keep.</strong><br>Your colours. Your expression.</p></div>
-            <button type="button" class="export-button" id="export-svg">Download this SVG <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 3v12m-5-5 5 5 5-5M5 16v5h14v-5"/></svg></button>
-          </div>
-        </aside>
-      </div>
-      <p id="announcer" class="sr-only" role="status" aria-live="polite" aria-atomic="true"></p>
+          <div class="arena-caption"><span id="game-status">Tap the face. It can take a joke.</span><span class="ready-mark" aria-hidden="true">✳</span></div>
+        </div>
+        <button type="button" class="slap-button" id="play-reaction"><span class="slap-button-icon" aria-hidden="true">↗</span><span>SLAP!</span><span class="button-hint">TAP TO PLAY</span></button>
+        <div class="motion-panel" id="motion-panel" data-status="off">
+          <div class="motion-copy"><strong><span class="sensor-dot" aria-hidden="true"></span> PLAY WITH MOTION</strong><p id="motion-status" role="status" aria-live="polite">Enable, then give your phone a quick shake.</p></div>
+          <button type="button" id="motion-toggle" class="motion-toggle" aria-pressed="false" aria-describedby="motion-status">Enable motion <span aria-hidden="true">↗</span></button>
+          <div class="motion-meter" aria-hidden="true"><span id="motion-level"></span></div>
+        </div>
+        <p class="console-footnote"><span>QUICK HITS. BIG FEELINGS.</span><span>YOUR BEST STREAK STAYS ON THIS DEVICE.</span></p>
+      </section>
     </main>
-
-    <footer class="footer"><span>ONE FACE. PLENTY OF PERSONALITY.</span><span>Made to move <span class="footer-spark" aria-hidden="true">✳</span></span></footer>
+    <footer class="app-footer"><span>A LITTLE COMIC RELIEF.</span><span>SLAP YOUR EX <span aria-hidden="true">©</span></span></footer>
   </div>
+
+  <dialog id="settings-dialog" class="settings-dialog" aria-labelledby="settings-title">
+    <div class="dialog-heading"><div><p class="eyebrow">MAKE IT YOURS</p><h2 id="settings-title">CHARACTER &amp; SETTINGS</h2></div><button type="button" id="settings-close" class="close-button" aria-label="Close settings">×</button></div>
+    <p class="dialog-intro">Tweak the look. Try a mood. Then get back to it.</p>
+    <div class="character-preview" aria-label="Live character preview"><svg viewBox="0 0 600 600" role="img" aria-label="Your character with the selected expression and colours"><use href="#portrait"/></svg><span>LIVE PREVIEW</span></div>
+    <section class="settings-section" aria-labelledby="mood-heading"><div class="section-heading"><h3 id="mood-heading">Try an expression</h3><span>PREVIEW ONLY</span></div>
+      <div class="expression-grid" role="group" aria-label="Expression preview">
+        <button type="button" class="expression-button is-active" data-expression="happy" aria-pressed="true"><svg viewBox="0 0 48 48" aria-hidden="true"><circle cx="24" cy="24" r="18"/><path d="M13 20q4-5 8 0m6 0q4-5 8 0M15 29q9 10 18 0"/></svg><span>Happy</span></button>
+        <button type="button" class="expression-button" data-expression="relaxed" aria-pressed="false"><svg viewBox="0 0 48 48" aria-hidden="true"><circle cx="24" cy="24" r="18"/><path d="M13 20q4 5 8 0m6 0q4 5 8 0M19 31h10"/></svg><span>Chill</span></button>
+        <button type="button" class="expression-button" data-expression="slapped" aria-pressed="false"><svg viewBox="0 0 48 48" aria-hidden="true"><circle cx="24" cy="24" r="18"/><path d="m14 16 6 5-6 4m20-9-6 5 6 4M20 32q4-7 8 0"/></svg><span>Ouch!</span></button>
+        <button type="button" class="expression-button" data-expression="sad" aria-pressed="false"><svg viewBox="0 0 48 48" aria-hidden="true"><circle cx="24" cy="24" r="18"/><path d="m13 18 7-3m8 0 7 3M17 32q7-8 14 0M17 22v2m14-2v2"/></svg><span>Sad</span></button>
+      </div>
+    </section>
+    <section class="settings-section" aria-labelledby="palette-heading"><div class="section-heading"><h3 id="palette-heading">Change the colours</h3><button type="button" class="text-button" id="reset-palette">Reset colours ↺</button></div><div class="palette-grid">
+      <label class="colour-control"><input type="color" name="skin" value="#bd896b" aria-label="Skin colour"><span>Skin</span></label>
+      <label class="colour-control"><input type="color" name="hair" value="#211c1a" aria-label="Hair colour"><span>Hair</span></label>
+      <label class="colour-control"><input type="color" name="lips" value="#99555a" aria-label="Lip colour"><span>Lips</span></label>
+      <label class="colour-control"><input type="color" name="shirt" value="#25443c" aria-label="Shawl colour"><span>Shawl</span></label>
+      <label class="colour-control"><input type="color" name="blush" value="#d16d6b" aria-label="Blush colour"><span>Blush</span></label>
+    </div></section>
+    <section class="settings-section motion-settings" aria-labelledby="motion-heading"><div><h3 id="motion-heading">Motion sensitivity</h3><p>How much movement triggers a slap.</p></div><select id="motion-sensitivity" aria-label="Motion sensitivity"><option value="gentle">Gentle</option><option value="normal" selected>Normal</option><option value="firm">Firm</option></select></section>
+    <div class="dialog-actions"><button type="button" id="export-svg" class="export-button">Save character as SVG <span aria-hidden="true">↓</span></button><button type="button" id="reset-round" class="reset-round">Start a fresh round <span aria-hidden="true">↺</span></button></div>
+    <p class="settings-note">Your best streak stays saved. To keep the app handy, use your browser’s Add to Home Screen option.</p>
+  </dialog>
+  <p id="announcer" class="sr-only" role="status" aria-live="polite" aria-atomic="true"></p>
 </body>
 </html>

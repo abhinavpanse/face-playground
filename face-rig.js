@@ -44,8 +44,10 @@
       for (const [key, value] of Object.entries(palette)) svg.style.setProperty(`--${key}`, value);
     }
 
-    function slap({side = 'left'} = {}) {
+    function slap({side = 'left', intensity = 1} = {}) {
       if (side !== 'left' && side !== 'right') throw new RangeError('Side must be left or right.');
+      if (!Number.isFinite(intensity)) throw new TypeError('Intensity must be a finite number.');
+      intensity = Math.max(.7, Math.min(1.6, intensity));
       cancelSequence();
       svg.dataset.side = side;
       svg.dataset.reaction = 'true';
@@ -55,7 +57,7 @@
         const direction = side === 'left' ? 1 : -1;
         reactionAnimation = head.animate([
           {transform: 'translate(0, 0) rotate(0deg) scale(1)'},
-          {transform: `translate(${25 * direction}px, 3px) rotate(${9 * direction}deg) scale(.94, 1.02)`, offset: .45},
+          {transform: `translate(${25 * direction * intensity}px, 3px) rotate(${9 * direction * intensity}deg) scale(${1 - .06 * intensity}, ${1 + .02 * intensity})`, offset: .45},
           {transform: `translate(${18 * direction}px, 3px) rotate(${7 * direction}deg) scale(.965, 1.015)`},
         ], {duration: 230, easing: 'cubic-bezier(.2,.75,.25,1)'});
       }

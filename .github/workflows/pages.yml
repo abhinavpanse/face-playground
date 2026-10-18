@@ -27,9 +27,11 @@ jobs:
         run: |
           node --check face-rig.js
           node --check preview.js
+          node --check motion-input.js
+          node --test tests/*.test.cjs
           python3 build.py
           mkdir _site
-          cp index.html portrait.svg head-only.svg face-rig.js preview.css preview.js expressions.html .nojekyll _site/
+          cp index.html portrait.svg head-only.svg face-rig.js motion-input.js preview.css preview.js expressions.html .nojekyll _site/
           cp -R expressions _site/
       - uses: actions/configure-pages@v5
       - uses: actions/upload-pages-artifact@v3

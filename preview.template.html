@@ -6,9 +6,10 @@
   <meta name="theme-color" content="#f7f2e7">
   <meta name="description" content="A playful, editable portrait. Explore expressions, change the palette, and take your character with you.">
   <title>Face / Play — A little character study</title>
-  <link rel="stylesheet" href="preview.css">
-  <script src="face-rig.js" defer></script>
-  <script src="preview.js" defer></script>
+  <link rel="stylesheet" href="preview.css?v=motion-1">
+  <script src="face-rig.js?v=motion-1" defer></script>
+  <script src="motion-input.js?v=motion-1" defer></script>
+  <script src="preview.js?v=motion-1" defer></script>
 </head>
 <body>
   <div class="page-shell">
@@ -21,18 +22,29 @@
     <main id="main">
       <section class="intro" aria-labelledby="page-title">
         <div>
-          <p class="eyebrow"><span class="tiny-spark" aria-hidden="true">✳</span> A LITTLE EXPRESSION EXPERIMENT</p>
+          <p class="eyebrow"><span class="tiny-spark" aria-hidden="true">✳</span> A LITTLE MOTION EXPERIMENT</p>
           <h1 id="page-title">A face.<br><em>A few feelings.</em></h1>
         </div>
         <div class="intro-note">
           <span class="note-arrow" aria-hidden="true">↙</span>
-          <p>A familiar face, with a playful side.<br>Try a mood. Pick some colours.<br>Give the portrait a little tap.</p>
+          <p>Enable motion. Give your phone a quick shake.<br>A little ouch, a little sad, then all smiles.<br>Or tap the portrait to try it.</p>
         </div>
       </section>
 
       <div class="studio">
         <section class="portrait-panel" aria-label="Interactive portrait">
           <div class="stage-topline"><span><span class="live-dot" aria-hidden="true"></span> LIVE PORTRAIT</span><span class="artwork-label">100% VECTOR</span></div>
+          <div class="motion-panel" id="motion-panel" data-status="off">
+            <div class="motion-main">
+              <div class="motion-copy"><strong>Let your phone play along.</strong><p id="motion-status" role="status" aria-live="polite">Enable motion, then give it a quick shake.</p></div>
+              <button type="button" id="motion-toggle" class="motion-toggle" aria-pressed="false" aria-describedby="motion-status">Enable motion</button>
+            </div>
+            <div class="motion-settings">
+              <label class="sensitivity-label" for="motion-sensitivity">Sensitivity <select id="motion-sensitivity"><option value="gentle">Gentle</option><option value="normal" selected>Normal</option><option value="firm">Firm</option></select></label>
+              <div class="motion-meter" aria-hidden="true"><span id="motion-level"></span></div>
+              <button type="button" id="sound-toggle" class="sound-toggle" aria-pressed="true">Sound on</button>
+            </div>
+          </div>
           <div class="portrait-stage" id="portrait-stage" role="button" tabindex="0" aria-label="Tap the portrait to play a surprised, sad, then happy reaction" aria-describedby="tap-hint">
             <div class="portrait-halo" aria-hidden="true"></div>
             <span class="stage-doodle doodle-one" aria-hidden="true">✳</span>
@@ -40,7 +52,7 @@
             <div class="portrait-art"><!-- PORTRAIT_SVG --></div>
             <span class="tap-sticker" aria-hidden="true">tap<br>me!<svg viewBox="0 0 42 36"><path d="M4 4 Q6 26 32 26 M22 16 L34 27 19 33"/></svg></span>
           </div>
-          <div class="stage-bottomline"><p id="tap-hint"><span aria-hidden="true">↖</span> Tap the face to see a reaction</p><span class="mood-pill" id="mood-pill"><span class="mood-light" aria-hidden="true"></span><span id="mood-label">Feeling happy</span></span></div>
+          <div class="stage-bottomline"><p id="tap-hint"><span aria-hidden="true">↖</span> Tap the face, or enable motion</p><span class="mood-pill" id="mood-pill"><span class="mood-light" aria-hidden="true"></span><span id="mood-label">Feeling happy</span></span></div>
         </section>
 
         <aside class="controls" aria-label="Portrait controls">

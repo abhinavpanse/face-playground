@@ -1,0 +1,199 @@
+<svg xmlns="http://www.w3.org/2000/svg" id="portrait" width="600" height="720" viewBox="0 0 600 720" fill="none" data-expression="happy" data-side="left" role="img" aria-labelledby="portrait-title portrait-description">
+  <title id="portrait-title">A happy caricature portrait</title>
+  <desc id="portrait-description">An editable vector caricature with swept-back dark hair, a broad forehead, expressive eyebrows, closed eyes, a rounded nose, a soft smile, and a charcoal T-shirt. Change data-expression to happy, relaxed, slapped, or sad. Every shape is a vector path.</desc>
+  <defs>
+    <linearGradient id="face-light" x1="382" y1="230" x2="155" y2="450" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#fff1d6" stop-opacity=".19"/><stop offset=".6" stop-color="#fff1d6" stop-opacity="0"/><stop offset="1" stop-color="#42291e" stop-opacity=".12"/>
+    </linearGradient>
+    <linearGradient id="nose-light" x1="323" y1="345" x2="282" y2="411" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#ffe6bb" stop-opacity=".03"/><stop offset=".7" stop-color="#ffe6bb" stop-opacity=".27"/><stop offset="1" stop-color="#ffe6bb" stop-opacity=".05"/>
+    </linearGradient>
+    <radialGradient id="cheek-glow"><stop stop-color="var(--blush, #d66a64)" stop-opacity=".55"/><stop offset="1" stop-color="var(--blush, #d66a64)" stop-opacity="0"/></radialGradient>
+    <radialGradient id="impact-glow"><stop stop-color="var(--blush, #d66a64)" stop-opacity=".85"/><stop offset="1" stop-color="var(--blush, #d66a64)" stop-opacity=".15"/></radialGradient>
+  </defs>
+  <style>
+    #portrait { --skin: #b88762; --hair: #211f20; --lips: #a75f59; --shirt: #242d32; --blush: #d66a64; --ink: #422e29; overflow: visible; }
+    #portrait .skin { fill: var(--skin); }
+    #portrait .hair { fill: var(--hair); }
+    #portrait .lips { fill: var(--lips); }
+    #portrait .outline { stroke: var(--ink); stroke-width: 3; stroke-linecap: round; stroke-linejoin: round; }
+    #portrait .line { stroke: var(--ink); stroke-linecap: round; stroke-linejoin: round; }
+    #portrait .hair-line { stroke: var(--hair); stroke-linecap: round; stroke-linejoin: round; }
+    #portrait .expression, #portrait .impact { display: none; }
+    #portrait[data-expression="happy"] .expression-happy,
+    #portrait[data-expression="relaxed"] .expression-relaxed,
+    #portrait[data-expression="slapped"] .expression-slapped,
+    #portrait[data-expression="sad"] .expression-sad { display: inline; }
+    #portrait #head { transform-origin: 300px 555px; transition: transform 350ms cubic-bezier(.2,.75,.25,1); }
+    #portrait[data-expression="sad"] #head { transform: translateY(8px) rotate(-2deg); }
+    #portrait[data-expression="slapped"] #head { transform: translate(18px, 3px) rotate(7deg) scale(.965, 1.015); transition-duration: 90ms; }
+    #portrait[data-expression="slapped"][data-side="right"] #head { transform: translate(-18px, 3px) rotate(-7deg) scale(.965, 1.015); }
+    #portrait[data-expression="slapped"] .impact { display: inline; }
+    #portrait .cheek-reaction { opacity: 0; transition: opacity 600ms ease; }
+    #portrait[data-expression="slapped"][data-side="left"] #cheek-reaction-left,
+    #portrait[data-expression="slapped"][data-side="right"] #cheek-reaction-right { opacity: .9; transition-duration: 70ms; }
+    #portrait[data-reaction="true"][data-expression="sad"][data-side="left"] #cheek-reaction-left,
+    #portrait[data-reaction="true"][data-expression="sad"][data-side="right"] #cheek-reaction-right { opacity: .28; }
+    #portrait[data-side="right"] #impact-left, #portrait[data-side="left"] #impact-right { display: none; }
+    #portrait[data-crop="head"] #body { display: none; }
+    @media (prefers-reduced-motion: reduce) { #portrait #head, #portrait .cheek-reaction { transition: none; } }
+  </style>
+
+  <!-- Body is independent from the animated head. Set data-crop="head" to hide it. -->
+  <g id="body">
+    <path id="shirt" d="M191 562 C161 576 112 585 87 609 C58 636 48 679 45 720 H555 C550 672 536 628 510 608 C484 588 438 578 408 563 L366 564 H234 Z" fill="var(--shirt, #242d32)" stroke="var(--ink, #422e29)" stroke-width="3"/>
+    <path id="neck" class="skin outline" d="M225 490 C229 527 222 554 209 576 C219 604 261 637 302 656 C349 631 387 598 396 575 C379 549 376 524 380 489 Z"/>
+    <path id="neck-shadow" d="M226 508 C261 543 327 571 380 515 L383 554 C344 605 266 582 226 548 Z" fill="#42291e" opacity=".2"/>
+    <path id="collar-left" d="M207 571 C222 606 259 635 302 656 L288 678 C244 660 214 628 193 590 Z" fill="#11191e" opacity=".56"/>
+    <path id="collar-right" d="M396 572 C380 609 341 637 302 656 L288 678 C348 658 386 629 411 589 Z" fill="#10181c" opacity=".65"/>
+    <path d="M103 636 Q123 663 125 704 M491 639 Q476 666 478 702 M161 612 Q178 618 186 640 M422 617 Q412 633 403 641" stroke="#fff" stroke-opacity=".07" stroke-width="4" stroke-linecap="round"/>
+    <path d="M224 681 Q272 696 297 693 M325 683 L376 667" stroke="#11191e" stroke-opacity=".32" stroke-width="5" stroke-linecap="round"/>
+  </g>
+
+  <g id="head">
+    <!-- Hair mass, ears, and face silhouette retain the same geometry in every expression. -->
+    <g id="hair-back">
+      <path class="hair" d="M129 351 C109 314 115 268 116 229 C113 152 153 97 220 78 C264 57 329 65 374 78 C445 95 482 157 478 231 C476 270 485 312 465 354 L444 419 L153 425 Z"/>
+      <path d="M141 191 C117 161 128 128 158 111 M171 112 C163 80 191 63 223 69 M238 75 C243 50 277 52 290 65 M346 76 C376 48 407 73 405 100 M437 133 C464 106 484 135 473 167 M467 249 C492 244 498 282 483 302" class="hair-line" stroke-width="2.5" opacity=".8"/>
+      <path d="M126 251 C100 226 100 205 111 192 M136 332 C112 335 112 364 124 379 M465 308 C492 319 489 348 475 363 M203 86 C191 63 200 48 213 46 M324 72 C333 51 350 50 362 57" class="hair-line" stroke-width="1.6" opacity=".7"/>
+    </g>
+    <g id="ears">
+      <path id="ear-left" class="skin outline" d="M151 334 C121 310 115 337 120 370 C123 396 134 415 153 411 L165 369 Z"/>
+      <path id="ear-right" class="skin outline" d="M449 334 C477 310 484 339 479 370 C476 395 465 413 447 409 L436 370 Z"/>
+      <path d="M145 350 C125 334 128 366 136 382 Q147 369 149 389 M455 349 C474 334 472 365 464 382 Q453 367 451 389" class="line" stroke-width="2.5" opacity=".46"/>
+    </g>
+    <g id="face">
+      <path id="face-base" class="skin outline" d="M152 203 C161 153 223 115 289 116 C360 110 420 148 441 203 C454 237 454 283 454 331 C459 384 452 437 430 477 C407 518 359 558 310 568 C269 573 218 544 184 509 C148 474 137 435 137 390 C135 348 140 309 139 275 C139 247 142 221 152 203 Z"/>
+      <path id="face-lighting" d="M152 203 C161 153 223 115 289 116 C360 110 420 148 441 203 C454 237 454 283 454 331 C459 384 452 437 430 477 C407 518 359 558 310 568 C269 573 218 544 184 509 C148 474 137 435 137 390 C135 348 140 309 139 275 C139 247 142 221 152 203 Z" fill="url(#face-light)"/>
+      <path id="temple-shade-left" d="M154 205 C144 277 161 317 159 360 C143 439 171 491 217 529 C171 505 144 459 139 413 C131 359 144 312 139 273 Q139 230 154 205 Z" fill="#543526" opacity=".12"/>
+      <path id="temple-shade-right" d="M435 199 C462 269 432 320 439 370 C451 432 421 496 385 527 C437 492 460 430 454 365 C452 306 460 245 435 199 Z" fill="#543526" opacity=".1"/>
+      <path id="forehead-highlight" d="M218 180 C247 151 319 143 353 168 C317 160 260 166 218 180 Z" fill="#ffe6c1" opacity=".13"/>
+      <path id="chin-highlight" d="M264 530 Q306 545 344 524 Q315 551 282 541 Z" fill="#ffe6c1" opacity=".19"/>
+    </g>
+    <g id="hair-front">
+      <path class="hair" d="M132 325 C120 272 126 230 128 209 C134 137 179 94 247 83 C298 71 355 79 393 98 C448 123 472 163 471 219 C469 250 463 296 454 328 L443 283 C447 247 437 206 424 184 C397 145 358 121 316 119 C256 109 206 134 179 163 C151 191 148 227 150 268 L146 313 L140 341 Z"/>
+      <path d="M154 199 C170 143 214 110 265 103 M181 161 C206 122 247 104 282 103 M327 104 C383 111 425 142 445 191 M362 105 C413 124 442 159 451 199" stroke="#fff" stroke-opacity=".12" stroke-width="3" stroke-linecap="round"/>
+      <path d="M148 232 Q143 189 160 160 M442 235 Q449 204 438 178 M198 141 Q223 118 241 117 M375 134 Q397 145 410 162" stroke="#fff" stroke-opacity=".08" stroke-width="2" stroke-linecap="round"/>
+      <path d="M205 145 Q223 123 251 120 M247 121 Q269 109 286 117 M297 117 Q313 108 331 124 M351 129 Q365 128 382 144 M170 175 Q162 192 163 203" class="hair-line" stroke-width="2.5"/>
+    </g>
+    <g id="cheeks">
+      <ellipse id="cheek-left" cx="198" cy="412" rx="49" ry="38" fill="url(#cheek-glow)" opacity=".47"/>
+      <ellipse id="cheek-right" cx="400" cy="413" rx="46" ry="35" fill="url(#cheek-glow)" opacity=".4"/>
+      <path d="M174 390 Q189 378 209 383 M384 383 Q407 377 424 390" stroke="#ffe7ca" stroke-width="6" stroke-opacity=".19" stroke-linecap="round"/>
+      <g id="cheek-reaction-left" class="cheek-reaction">
+        <ellipse cx="184" cy="405" rx="42" ry="32" fill="url(#impact-glow)"/>
+        <path d="M165 394 L161 407 M178 392 L174 408 M191 394 L187 409" stroke="var(--blush, #d66a64)" stroke-width="4" stroke-linecap="round"/>
+      </g>
+      <g id="cheek-reaction-right" class="cheek-reaction">
+        <ellipse cx="413" cy="405" rx="39" ry="31" fill="url(#impact-glow)"/>
+        <path d="M401 394 L397 407 M414 392 L410 408 M427 394 L423 409" stroke="var(--blush, #d66a64)" stroke-width="4" stroke-linecap="round"/>
+      </g>
+    </g>
+
+    <g id="brows" transform="translate(0 -25)">
+      <g class="expression expression-happy expression-relaxed">
+        <path id="brow-left-happy" class="hair" d="M170 294 C186 268 214 260 236 271 Q250 277 260 297 C240 288 224 280 210 282 Q188 282 170 294 Z"/>
+        <path id="brow-right-happy" class="hair" d="M338 295 C353 272 373 273 391 279 Q418 287 433 306 C409 295 396 294 383 292 Q360 286 338 295 Z"/>
+        <path d="M242 279 L239 268 M247 282 L247 273 M351 285 L353 277 M357 282 L361 275" class="hair-line" stroke-width="2"/>
+      </g>
+      <g class="expression expression-slapped">
+        <path id="brow-left-slapped" class="hair" d="M173 284 Q216 278 260 307 L255 319 Q209 296 173 294 Z"/>
+        <path id="brow-right-slapped" class="hair" d="M337 309 Q382 274 427 288 L431 298 Q389 290 342 320 Z"/>
+      </g>
+      <g class="expression expression-sad">
+        <path id="brow-left-sad" class="hair" d="M169 307 C192 297 218 283 244 268 Q254 270 259 285 C228 286 198 306 169 313 Z"/>
+        <path id="brow-right-sad" class="hair" d="M339 280 Q341 269 351 270 C373 289 399 302 428 311 L432 318 Q378 306 339 288 Z"/>
+      </g>
+    </g>
+
+    <g id="eyes" transform="translate(0 -14)">
+      <g class="expression expression-happy">
+        <g id="eye-left-happy">
+          <path d="M178 332 C189 307 233 301 257 330 Q219 353 178 332 Z" fill="#684538" opacity=".15"/>
+          <path d="M181 331 C201 345 233 347 255 331" class="hair-line" stroke-width="5"/>
+          <path d="M184 333 L177 327 M191 337 L185 333 M198 341 L194 336" class="hair-line" stroke-width="3"/>
+          <path d="M188 315 Q217 304 243 317" class="line" stroke-width="2" opacity=".28"/>
+          <path d="M193 357 Q220 365 242 355" class="line" stroke-width="1.5" opacity=".2"/>
+        </g>
+        <g id="eye-right-happy">
+          <path d="M341 334 C359 312 397 309 422 340 Q385 359 341 334 Z" fill="#684538" opacity=".14"/>
+          <path d="M344 335 C367 351 396 352 420 338" class="hair-line" stroke-width="5"/>
+          <path d="M418 339 L424 333 M410 343 L417 337 M403 347 L409 342" class="hair-line" stroke-width="3"/>
+          <path d="M352 320 Q381 310 406 324" class="line" stroke-width="2" opacity=".28"/>
+          <path d="M358 360 Q385 370 405 360" class="line" stroke-width="1.5" opacity=".2"/>
+        </g>
+      </g>
+      <g class="expression expression-relaxed">
+        <g id="eye-left-relaxed">
+          <path d="M180 335 Q218 312 255 336 Q216 349 180 335 Z" fill="#684538" opacity=".16"/>
+          <path d="M180 335 Q219 345 255 335 M182 336 L176 331 M190 338 L185 333" class="hair-line" stroke-width="4"/>
+          <path d="M190 321 Q220 312 245 323" class="line" stroke-width="2" opacity=".25"/>
+        </g>
+        <g id="eye-right-relaxed">
+          <path d="M343 338 Q382 317 421 341 Q382 354 343 338 Z" fill="#684538" opacity=".16"/>
+          <path d="M343 338 Q381 351 421 341 M419 341 L425 336 M410 345 L416 340" class="hair-line" stroke-width="4"/>
+          <path d="M354 325 Q382 317 410 329" class="line" stroke-width="2" opacity=".25"/>
+        </g>
+      </g>
+      <g class="expression expression-slapped">
+        <g id="eye-left-slapped"><path d="M188 325 L240 344 L190 355" class="hair-line" stroke-width="5"/><path d="M175 340 L165 335 M174 350 L163 354" class="line" stroke-width="2.5" opacity=".65"/></g>
+        <g id="eye-right-slapped"><path d="M410 328 L361 346 L409 360" class="hair-line" stroke-width="5"/><path d="M426 343 L437 339 M427 353 L438 359" class="line" stroke-width="2.5" opacity=".65"/></g>
+      </g>
+      <g class="expression expression-sad">
+        <g id="eye-left-sad"><path d="M180 342 Q216 362 254 331" class="hair-line" stroke-width="4.5"/><path d="M180 342 L174 337 M189 346 L183 341" class="hair-line" stroke-width="3"/><path d="M190 361 Q222 373 245 355" class="line" stroke-width="2" opacity=".25"/></g>
+        <g id="eye-right-sad"><path d="M345 333 Q383 367 421 347" class="hair-line" stroke-width="4.5"/><path d="M419 348 L425 343 M411 351 L417 346" class="hair-line" stroke-width="3"/><path d="M356 358 Q386 376 411 365" class="line" stroke-width="2" opacity=".25"/></g>
+      </g>
+    </g>
+
+    <g id="nose">
+      <path id="nose-shadow" d="M279 311 C280 347 271 368 257 388 C249 400 253 413 269 417 Q280 420 290 425 Q311 441 338 420 C350 417 354 405 347 397 Q337 388 335 375 C328 397 309 410 290 403 C275 398 280 384 285 369 C292 344 292 324 288 312 Z" fill="#573726" opacity=".19"/>
+      <path id="nose-highlight" d="M305 310 C314 331 314 364 326 386 C335 397 337 409 320 417 C308 421 295 416 287 409 C281 401 292 391 295 376 Q305 343 305 310 Z" fill="url(#nose-light)"/>
+      <path id="nose-contour" d="M271 376 C259 389 254 400 263 409 M338 383 Q351 396 344 407" class="line" stroke-width="2.8" opacity=".45"/>
+      <path id="nostril-left" d="M266 411 Q277 405 287 417 Q276 415 266 411 Z" fill="var(--ink, #422e29)"/>
+      <path id="nostril-right" d="M320 420 Q332 407 343 410 Q338 419 320 420 Z" fill="var(--ink, #422e29)"/>
+      <path id="nose-tip" d="M287 420 Q302 429 317 422" class="line" stroke-width="2.2" opacity=".65"/>
+      <path d="M313 389 Q319 395 318 401" stroke="#ffe4bc" stroke-width="6" stroke-opacity=".28" stroke-linecap="round"/>
+    </g>
+    <g id="philtrum"><path d="M294 433 Q292 439 287 442 M309 433 L314 442" class="line" stroke-width="2" opacity=".19"/></g>
+
+    <g id="mouth" transform="translate(30 0) scale(.9 1)">
+      <g id="mouth-happy" class="expression expression-happy">
+        <path id="lip-upper-happy" class="lips" d="M225 462 C243 461 257 446 278 450 Q291 452 300 457 Q311 448 325 451 C344 451 356 459 375 458 C352 474 325 478 300 477 Q256 478 225 462 Z"/>
+        <path id="lip-lower-happy" class="lips" d="M226 462 Q297 489 375 458 C353 480 330 497 300 495 Q256 493 226 462 Z"/>
+        <path d="M226 462 Q297 484 375 458" class="line" stroke-width="2.6"/>
+        <path d="M261 481 Q299 493 336 480" stroke="#ffcfbd" stroke-opacity=".3" stroke-width="2.5" stroke-linecap="round"/>
+        <path d="M225 459 L221 467 M374 455 L379 463" class="line" stroke-width="2.7"/>
+        <path d="M213 443 Q205 455 210 466 M387 443 Q395 455 389 466" class="line" stroke-width="2" opacity=".24"/>
+      </g>
+      <g id="mouth-relaxed" class="expression expression-relaxed">
+        <path class="lips" d="M235 468 C253 457 271 449 288 456 Q299 463 310 457 Q329 452 364 467 Q301 481 235 468 Z"/>
+        <path class="lips" d="M235 468 Q299 482 364 467 Q340 492 300 490 Q263 490 235 468 Z"/>
+        <path d="M235 468 Q300 477 364 467" class="line" stroke-width="2.8"/>
+        <path d="M275 482 Q301 488 329 481" stroke="#ffcfbd" stroke-width="3" stroke-opacity=".35" stroke-linecap="round"/>
+      </g>
+      <g id="mouth-slapped" class="expression expression-slapped">
+        <path class="lips" d="M280 468 C291 450 329 448 345 464 C355 477 334 503 314 502 C290 502 273 485 280 468 Z"/>
+        <path d="M289 471 C302 458 327 456 337 467 C341 479 327 493 313 493 C299 493 285 481 289 471 Z" fill="var(--ink, #422e29)"/>
+        <path d="M302 489 Q317 480 330 485 Q318 498 302 489 Z" class="lips"/>
+        <path d="M288 508 Q305 513 319 507" class="line" stroke-width="2" opacity=".25"/>
+      </g>
+      <g id="mouth-sad" class="expression expression-sad">
+        <path class="lips" d="M239 489 C257 468 273 459 291 464 Q300 468 309 464 C327 459 344 469 361 490 Q300 476 239 489 Z"/>
+        <path class="lips" d="M239 489 Q300 471 361 490 C343 495 330 501 303 499 Q270 498 239 489 Z"/>
+        <path d="M239 489 Q300 466 361 490" class="line" stroke-width="3"/>
+        <path d="M279 492 Q300 497 322 492" stroke="#ffcfbd" stroke-width="3" stroke-opacity=".4" stroke-linecap="round"/>
+        <path d="M240 486 L237 493 M360 487 L364 494" class="line" stroke-width="3"/>
+      </g>
+    </g>
+    <g id="effects" class="impact" stroke-linecap="round" stroke-linejoin="round">
+      <g id="impact-left" stroke="#ee7548" stroke-width="5">
+        <path d="M99 367 L79 356 M94 389 L68 388 M99 411 L79 423"/>
+        <path d="M84 308 L89 319 L101 320 L92 328 L94 340 L84 334 L74 340 L76 328 L67 320 L79 319 Z" fill="#f7c85d" stroke-width="2.5"/>
+      </g>
+      <g id="impact-right" stroke="#ee7548" stroke-width="5">
+        <path d="M501 367 L521 356 M506 389 L532 388 M501 411 L521 423"/>
+        <path d="M516 308 L521 319 L533 320 L524 328 L526 340 L516 334 L506 340 L508 328 L499 320 L511 319 Z" fill="#f7c85d" stroke-width="2.5"/>
+      </g>
+    </g>
+  </g>
+</svg>

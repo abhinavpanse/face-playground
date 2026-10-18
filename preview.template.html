@@ -1,0 +1,82 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#f7f2e7">
+  <meta name="description" content="A playful, editable portrait. Explore expressions, change the palette, and take your character with you.">
+  <title>Face / Play — A little character study</title>
+  <link rel="stylesheet" href="preview.css">
+  <script src="face-rig.js" defer></script>
+  <script src="preview.js" defer></script>
+</head>
+<body>
+  <div class="page-shell">
+    <header class="masthead">
+      <a class="wordmark" href="#main" aria-label="Face Play home">FACE <span>/</span> PLAY<span class="wordmark-dot" aria-hidden="true"></span></a>
+      <span class="edition">CHARACTER STUDY <span>001</span></span>
+      <a class="source-link" href="portrait.svg" download>Original SVG <span aria-hidden="true">↗</span></a>
+    </header>
+
+    <main id="main">
+      <section class="intro" aria-labelledby="page-title">
+        <div>
+          <p class="eyebrow"><span class="tiny-spark" aria-hidden="true">✳</span> A LITTLE EXPRESSION EXPERIMENT</p>
+          <h1 id="page-title">A face.<br><em>A few feelings.</em></h1>
+        </div>
+        <div class="intro-note">
+          <span class="note-arrow" aria-hidden="true">↙</span>
+          <p>A familiar face, with a playful side.<br>Try a mood. Pick some colours.<br>Give the portrait a little tap.</p>
+        </div>
+      </section>
+
+      <div class="studio">
+        <section class="portrait-panel" aria-label="Interactive portrait">
+          <div class="stage-topline"><span><span class="live-dot" aria-hidden="true"></span> LIVE PORTRAIT</span><span class="artwork-label">100% VECTOR</span></div>
+          <div class="portrait-stage" id="portrait-stage" role="button" tabindex="0" aria-label="Tap the portrait to play a surprised, sad, then happy reaction" aria-describedby="tap-hint">
+            <div class="portrait-halo" aria-hidden="true"></div>
+            <span class="stage-doodle doodle-one" aria-hidden="true">✳</span>
+            <span class="stage-doodle doodle-two" aria-hidden="true">✧</span>
+            <div class="portrait-art"><!-- PORTRAIT_SVG --></div>
+            <span class="tap-sticker" aria-hidden="true">tap<br>me!<svg viewBox="0 0 42 36"><path d="M4 4 Q6 26 32 26 M22 16 L34 27 19 33"/></svg></span>
+          </div>
+          <div class="stage-bottomline"><p id="tap-hint"><span aria-hidden="true">↖</span> Tap the face to see a reaction</p><span class="mood-pill" id="mood-pill"><span class="mood-light" aria-hidden="true"></span><span id="mood-label">Feeling happy</span></span></div>
+        </section>
+
+        <aside class="controls" aria-label="Portrait controls">
+          <section class="control-section expressions-section" aria-labelledby="expression-heading">
+            <div class="section-heading"><h2 id="expression-heading"><span class="section-number">01</span> Set the mood</h2><span class="small-caption">GO ON, TRY ONE</span></div>
+            <div class="expression-grid" role="group" aria-label="Expression">
+              <button type="button" class="expression-button is-active" data-expression="happy" aria-pressed="true"><svg viewBox="0 0 48 48" aria-hidden="true"><circle cx="24" cy="24" r="19"/><path d="M14 20q3-5 6 0m8 0q3-5 6 0M15 28q9 12 18 0"/></svg><span>Happy</span><span class="expression-dot" aria-hidden="true"></span></button>
+              <button type="button" class="expression-button" data-expression="relaxed" aria-pressed="false"><svg viewBox="0 0 48 48" aria-hidden="true"><circle cx="24" cy="24" r="19"/><path d="M13 20q4 5 8 0m6 0q4 5 8 0M19 31q5 3 10 0"/></svg><span>Relaxed</span><span class="expression-dot" aria-hidden="true"></span></button>
+              <button type="button" class="expression-button" data-expression="slapped" aria-pressed="false"><svg viewBox="0 0 48 48" aria-hidden="true"><circle cx="24" cy="24" r="19"/><path d="m14 16 6 5-6 4m20-9-6 5 6 4M20 32q4-7 8 0"/></svg><span>Ouch!</span><span class="expression-dot" aria-hidden="true"></span></button>
+              <button type="button" class="expression-button" data-expression="sad" aria-pressed="false"><svg viewBox="0 0 48 48" aria-hidden="true"><circle cx="24" cy="24" r="19"/><path d="m13 18 7-3m8 0 7 3M17 32q7-8 14 0M17 22v2m14-2v2"/></svg><span>Sad</span><span class="expression-dot" aria-hidden="true"></span></button>
+            </div>
+            <button type="button" class="reaction-button" id="play-reaction"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="m9 5 10 7-10 7Z"/></svg><span>Play the reaction</span><span class="reaction-arrow" aria-hidden="true">↗</span></button>
+            <p class="sequence" aria-label="Reaction sequence: Happy, ouch, sad, happy"><span data-step="happy">Happy</span><span aria-hidden="true">→</span><span data-step="slapped">Ouch</span><span aria-hidden="true">→</span><span data-step="sad">Sad</span><span aria-hidden="true">→</span><span data-step="happy">Happy</span></p>
+          </section>
+
+          <section class="control-section palette-section" aria-labelledby="palette-heading">
+            <div class="section-heading"><h2 id="palette-heading"><span class="section-number">02</span> Make it yours</h2><button type="button" class="text-button" id="reset-palette">Reset colours <span aria-hidden="true">↺</span></button></div>
+            <div class="palette-grid">
+              <label class="colour-control"><input type="color" name="skin" value="#b88762" aria-label="Skin colour"><span>Skin</span></label>
+              <label class="colour-control"><input type="color" name="hair" value="#211f20" aria-label="Hair colour"><span>Hair</span></label>
+              <label class="colour-control"><input type="color" name="lips" value="#a75f59" aria-label="Lip colour"><span>Lips</span></label>
+              <label class="colour-control"><input type="color" name="shirt" value="#242d32" aria-label="Shirt colour"><span>Shirt</span></label>
+              <label class="colour-control"><input type="color" name="blush" value="#d66a64" aria-label="Blush colour"><span>Blush</span></label>
+            </div>
+          </section>
+
+          <div class="takeaway">
+            <div class="takeaway-copy"><span class="takeaway-icon" aria-hidden="true">↗</span><p><strong>A character you can keep.</strong><br>Your colours. Your expression.</p></div>
+            <button type="button" class="export-button" id="export-svg">Download this SVG <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 3v12m-5-5 5 5 5-5M5 16v5h14v-5"/></svg></button>
+          </div>
+        </aside>
+      </div>
+      <p id="announcer" class="sr-only" role="status" aria-live="polite" aria-atomic="true"></p>
+    </main>
+
+    <footer class="footer"><span>ONE FACE. PLENTY OF PERSONALITY.</span><span>Made to move <span class="footer-spark" aria-hidden="true">✳</span></span></footer>
+  </div>
+</body>
+</html>
